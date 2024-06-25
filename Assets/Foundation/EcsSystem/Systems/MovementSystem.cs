@@ -22,8 +22,8 @@ namespace Foundation.EcsSystem.Systems
 
                 ref var navMeshAgent = ref movableComponent.NavMeshAgent;
 
-                var endMovementPoint = new Vector3(transform.position.x + direction.x, transform.position.y, 
-                    transform.position.z + direction.y);
+                var endMovementPoint = new Vector3(transform.position.x + direction.x, 
+                    transform.position.y, transform.position.z + direction.y);
 
                 navMeshAgent.SetDestination(endMovementPoint);
             }
