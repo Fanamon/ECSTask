@@ -31,9 +31,9 @@ namespace Foundation.Player.Systems
 
         public void Run()
         {
-            foreach (var index in _directionFilter)
+            foreach (var entity in _directionFilter)
             {
-                ref var directionComponent = ref _directionFilter.Get2(index);
+                ref var directionComponent = ref _directionFilter.Get2(entity);
                 ref var direction = ref directionComponent.Direction;
 
                 direction = _moveDirection.normalized;
@@ -72,9 +72,9 @@ namespace Foundation.Player.Systems
             _playerInputAction.Player.Swipe.performed -= OnSwiped;
             _playerInputAction.Player.Tap.canceled -= OnTapCanceled;
 
-            foreach (var index in _directionFilter)
+            foreach (var entity in _directionFilter)
             {
-                ref var damping = ref _directionFilter.Get3(index);
+                ref var damping = ref _directionFilter.Get3(entity);
 
                 Tweener dampingTweener = DOVirtual.Vector2(_moveDirection, Vector2.zero,
                 damping.Duration, value => _moveDirection = value);

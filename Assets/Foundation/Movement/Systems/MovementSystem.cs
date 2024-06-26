@@ -11,11 +11,11 @@ namespace Foundation.Movement.Systems
 
         public void Run()
         {
-            foreach (var index in _movableFilter)
+            foreach (var entity in _movableFilter)
             {
-                ref var modelComponent = ref _movableFilter.Get1(index);
-                ref var movableComponent = ref _movableFilter.Get2(index);
-                ref var directionComponent = ref _movableFilter.Get3(index);
+                ref var modelComponent = ref _movableFilter.Get1(entity);
+                ref var movableComponent = ref _movableFilter.Get2(entity);
+                ref var directionComponent = ref _movableFilter.Get3(entity);
 
                 ref var direction = ref directionComponent.Direction;
                 ref var transform = ref modelComponent.ModelTransform;
