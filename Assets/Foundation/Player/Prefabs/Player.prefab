@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6012180510033237558}
   - component: {fileID: 5162848066350756212}
   - component: {fileID: 3089376218120799129}
+  - component: {fileID: 8215050530998749156}
   - component: {fileID: 753296440381260675}
   - component: {fileID: 5635800671433164426}
   m_Layer: 0
@@ -101,9 +102,9 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 4
-  m_Acceleration: 12
+  m_Acceleration: 20
   avoidancePriority: 50
-  m_AngularSpeed: 800
+  m_AngularSpeed: 1000
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -153,6 +154,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   value:
     ModelTransform: {fileID: 8884423212629118934}
+--- !u!114 &8215050530998749156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4936239070888902024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fec2bcc04089bc44c9ee1aaed4bb8e53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value:
+    Duration: 0.35
 --- !u!114 &753296440381260675
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,9 +6,27 @@
             "id": "e36bf04b-6a3f-4c38-af64-9ee7d8e0f61e",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "Tap",
+                    "type": "Button",
+                    "id": "32f4f9e0-0889-4c85-b466-d480cc2f47e8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Swipe",
                     "type": "Value",
                     "id": "739fb69d-6f84-4d79-b530-560b8c94e6f4",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Position",
+                    "type": "Value",
+                    "id": "6314895d-2bb1-4e7a-a6d2-a495b5dfd1e5",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -17,59 +35,15 @@
             ],
             "bindings": [
                 {
-                    "name": "WASD",
-                    "id": "0b133e91-04fb-4485-a23b-a51796d9ddcb",
-                    "path": "2DVector",
+                    "name": "",
+                    "id": "1ca40960-9e0d-49db-b1c0-cc51532a5abb",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": true,
+                    "groups": "Mouse",
+                    "action": "Swipe",
+                    "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "8b851798-10d6-475e-935c-4673e69aece9",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "603b3b63-a72e-4e50-bd46-def6db67f6df",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "358965a9-e3bd-4e0c-8439-83811b1b7ced",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "5a7d194f-bc5a-44b6-b315-355cf7a91327",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
@@ -78,7 +52,51 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Touchscreen",
-                    "action": "Move",
+                    "action": "Swipe",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "43851c1b-d4a8-460b-9858-8aaa56378581",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b79a67e-4e22-4730-83fa-f9d753852c7a",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touchscreen",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "180aef2a-1b6b-49e2-8c26-b41f88117d17",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "Tap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aae23a70-b92b-4631-be6a-68d15cada36c",
+                    "path": "<Touchscreen>/primaryTouch/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touchscreen",
+                    "action": "Tap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -87,11 +105,11 @@
     ],
     "controlSchemes": [
         {
-            "name": "Keyboard",
-            "bindingGroup": "Keyboard",
+            "name": "Mouse",
+            "bindingGroup": "Mouse",
             "devices": [
                 {
-                    "devicePath": "<Keyboard>",
+                    "devicePath": "<Mouse>",
                     "isOptional": false,
                     "isOR": false
                 }

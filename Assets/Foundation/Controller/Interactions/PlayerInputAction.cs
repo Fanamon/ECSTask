@@ -30,9 +30,27 @@ namespace Foundation.Controller.Interactions
             ""id"": ""e36bf04b-6a3f-4c38-af64-9ee7d8e0f61e"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
+                    ""name"": ""Tap"",
+                    ""type"": ""Button"",
+                    ""id"": ""32f4f9e0-0889-4c85-b466-d480cc2f47e8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Swipe"",
                     ""type"": ""Value"",
                     ""id"": ""739fb69d-6f84-4d79-b530-560b8c94e6f4"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Position"",
+                    ""type"": ""Value"",
+                    ""id"": ""6314895d-2bb1-4e7a-a6d2-a495b5dfd1e5"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -41,59 +59,15 @@ namespace Foundation.Controller.Interactions
             ],
             ""bindings"": [
                 {
-                    ""name"": ""WASD"",
-                    ""id"": ""0b133e91-04fb-4485-a23b-a51796d9ddcb"",
-                    ""path"": ""2DVector"",
+                    ""name"": """",
+                    ""id"": ""1ca40960-9e0d-49db-b1c0-cc51532a5abb"",
+                    ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
+                    ""groups"": ""Mouse"",
+                    ""action"": ""Swipe"",
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""8b851798-10d6-475e-935c-4673e69aece9"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""603b3b63-a72e-4e50-bd46-def6db67f6df"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""358965a9-e3bd-4e0c-8439-83811b1b7ced"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""5a7d194f-bc5a-44b6-b315-355cf7a91327"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
@@ -102,7 +76,51 @@ namespace Foundation.Controller.Interactions
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Touchscreen"",
-                    ""action"": ""Move"",
+                    ""action"": ""Swipe"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""43851c1b-d4a8-460b-9858-8aaa56378581"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse"",
+                    ""action"": ""Position"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b79a67e-4e22-4730-83fa-f9d753852c7a"",
+                    ""path"": ""<Touchscreen>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touchscreen"",
+                    ""action"": ""Position"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""180aef2a-1b6b-49e2-8c26-b41f88117d17"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse"",
+                    ""action"": ""Tap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aae23a70-b92b-4631-be6a-68d15cada36c"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touchscreen"",
+                    ""action"": ""Tap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -111,11 +129,11 @@ namespace Foundation.Controller.Interactions
     ],
     ""controlSchemes"": [
         {
-            ""name"": ""Keyboard"",
-            ""bindingGroup"": ""Keyboard"",
+            ""name"": ""Mouse"",
+            ""bindingGroup"": ""Mouse"",
             ""devices"": [
                 {
-                    ""devicePath"": ""<Keyboard>"",
+                    ""devicePath"": ""<Mouse>"",
                     ""isOptional"": false,
                     ""isOR"": false
                 }
@@ -136,7 +154,9 @@ namespace Foundation.Controller.Interactions
 }");
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-            m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+            m_Player_Tap = m_Player.FindAction("Tap", throwIfNotFound: true);
+            m_Player_Swipe = m_Player.FindAction("Swipe", throwIfNotFound: true);
+            m_Player_Position = m_Player.FindAction("Position", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -198,12 +218,16 @@ namespace Foundation.Controller.Interactions
         // Player
         private readonly InputActionMap m_Player;
         private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-        private readonly InputAction m_Player_Move;
+        private readonly InputAction m_Player_Tap;
+        private readonly InputAction m_Player_Swipe;
+        private readonly InputAction m_Player_Position;
         public struct PlayerActions
         {
             private @PlayerInputAction m_Wrapper;
             public PlayerActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Move => m_Wrapper.m_Player_Move;
+            public InputAction @Tap => m_Wrapper.m_Player_Tap;
+            public InputAction @Swipe => m_Wrapper.m_Player_Swipe;
+            public InputAction @Position => m_Wrapper.m_Player_Position;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -213,16 +237,28 @@ namespace Foundation.Controller.Interactions
             {
                 if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
+                @Tap.started += instance.OnTap;
+                @Tap.performed += instance.OnTap;
+                @Tap.canceled += instance.OnTap;
+                @Swipe.started += instance.OnSwipe;
+                @Swipe.performed += instance.OnSwipe;
+                @Swipe.canceled += instance.OnSwipe;
+                @Position.started += instance.OnPosition;
+                @Position.performed += instance.OnPosition;
+                @Position.canceled += instance.OnPosition;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
             {
-                @Move.started -= instance.OnMove;
-                @Move.performed -= instance.OnMove;
-                @Move.canceled -= instance.OnMove;
+                @Tap.started -= instance.OnTap;
+                @Tap.performed -= instance.OnTap;
+                @Tap.canceled -= instance.OnTap;
+                @Swipe.started -= instance.OnSwipe;
+                @Swipe.performed -= instance.OnSwipe;
+                @Swipe.canceled -= instance.OnSwipe;
+                @Position.started -= instance.OnPosition;
+                @Position.performed -= instance.OnPosition;
+                @Position.canceled -= instance.OnPosition;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -240,13 +276,13 @@ namespace Foundation.Controller.Interactions
             }
         }
         public PlayerActions @Player => new PlayerActions(this);
-        private int m_KeyboardSchemeIndex = -1;
-        public InputControlScheme KeyboardScheme
+        private int m_MouseSchemeIndex = -1;
+        public InputControlScheme MouseScheme
         {
             get
             {
-                if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
-                return asset.controlSchemes[m_KeyboardSchemeIndex];
+                if (m_MouseSchemeIndex == -1) m_MouseSchemeIndex = asset.FindControlSchemeIndex("Mouse");
+                return asset.controlSchemes[m_MouseSchemeIndex];
             }
         }
         private int m_TouchscreenSchemeIndex = -1;
@@ -260,7 +296,9 @@ namespace Foundation.Controller.Interactions
         }
         public interface IPlayerActions
         {
-            void OnMove(InputAction.CallbackContext context);
+            void OnTap(InputAction.CallbackContext context);
+            void OnSwipe(InputAction.CallbackContext context);
+            void OnPosition(InputAction.CallbackContext context);
         }
     }
 }
