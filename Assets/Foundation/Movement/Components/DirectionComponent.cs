@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Foundation.Movement.Components
 {
-    public struct DirectionComponent
+    internal struct DirectionComponent
     {
         public Vector3 Direction;
     }

@@ -18,12 +18,12 @@ namespace Foundation.Movement.Systems
                 ref var directionComponent = ref _movableFilter.Get3(entity);
 
                 ref var direction = ref directionComponent.Direction;
-                ref var transform = ref modelComponent.ModelTransform;
+                ref var transform = ref modelComponent.Transform;
 
                 ref var navMeshAgent = ref movableComponent.NavMeshAgent;
 
                 var endMovementPoint = new Vector3(transform.position.x + direction.x, 
-                    transform.position.y, transform.position.z + direction.y);
+                    transform.position.y + direction.y, transform.position.z + direction.z);
 
                 navMeshAgent.SetDestination(endMovementPoint);
             }

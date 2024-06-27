@@ -31,7 +31,8 @@ namespace Foundation.Player.Systems
             ref var playerTag = ref _playerEntity.Get<PlayerTag>();
             ref var direction = ref _playerEntity.Get<DirectionComponent>();
 
-            if (_cancellationTokenSource != null)
+            if (_cancellationTokenSource != null &&
+                _cancellationTokenSource.IsCancellationRequested == false)
             {
                 _cancellationTokenSource?.Cancel();
                 _cancellationTokenSource?.Dispose();
@@ -44,7 +45,8 @@ namespace Foundation.Player.Systems
 
         public void Destroy()
         {
-            if (_cancellationTokenSource != null)
+            if (_cancellationTokenSource != null && 
+                _cancellationTokenSource.IsCancellationRequested == false)
             {
                 _cancellationTokenSource?.Cancel();
                 _cancellationTokenSource?.Dispose();
@@ -72,11 +74,11 @@ namespace Foundation.Player.Systems
             ref var movable = ref _playerEntity.Get<MovableComponent>();
             ref var dampingDirection = ref _playerEntity.Get<DampingDirectionComponent>();
 
-            model.ModelTransform = player.transform;
+            model.Transform = player.transform;
             movable.NavMeshAgent = player.GetComponent<NavMeshAgent>();
             dampingDirection.Duration = _config.DampingDuration;
 
-            _cameraFollowInitializer.SetCameraFollow(model.ModelTransform);
+            _cameraFollowInitializer.SetCameraFollow(model.Transform);
         }
     }
 }

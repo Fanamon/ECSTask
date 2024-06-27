@@ -1,9 +1,6 @@
-using System;
-
 namespace Foundation.Movement.Components
 {
-    [Serializable]
-    public struct DampingDirectionComponent
+    internal struct DampingDirectionComponent
     {
         public float Duration;
     }

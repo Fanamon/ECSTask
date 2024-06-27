@@ -36,7 +36,7 @@ namespace Foundation.Player.Systems
                 ref var directionComponent = ref _directionFilter.Get2(entity);
                 ref var direction = ref directionComponent.Direction;
 
-                direction = _moveDirection.normalized;
+                direction = new Vector3(_moveDirection.x, 0, _moveDirection.y).normalized;
             }
         }
 

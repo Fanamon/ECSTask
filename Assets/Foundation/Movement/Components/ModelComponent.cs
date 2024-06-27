@@ -1,11 +1,9 @@
-using System;
 using UnityEngine;
 
 namespace Foundation.Movement.Components
 {
-    [Serializable]
-    public struct ModelComponent
+    internal struct ModelComponent
     {
-        public Transform ModelTransform;
+        public Transform Transform;
     }
 }
