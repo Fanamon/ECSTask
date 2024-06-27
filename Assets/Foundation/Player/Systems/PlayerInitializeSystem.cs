@@ -13,7 +13,7 @@ using UnityEngine.AI;
 
 namespace Foundation.Player.Systems
 {
-    public class PlayerInitializeSystem : IEcsInitSystem, IEcsDestroySystem
+    sealed class PlayerInitializeSystem : IEcsInitSystem, IEcsDestroySystem
     {
         private EcsWorld _ecsWorld = null;
         private PlayerConfig _config;

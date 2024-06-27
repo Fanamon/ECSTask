@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34eb6274a69b5d241b7ecbb646852f2e, type: 3}
-  m_Name: ItemConfig
+  m_Script: {fileID: 11500000, guid: e9196a0f304bfc841a4a8f5954864c9d, type: 3}
+  m_Name: SpawnerConfig
   m_EditorClassIdentifier: 
-  _dropPower: 3
-  Prefab:
-    m_AssetGUID: 81928663a105abf4d94e4c385af4c603
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  _delay: 5
+  _antispawnRadius: 2

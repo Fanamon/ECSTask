@@ -3,24 +3,36 @@ using Foundation.Items.Configs;
 using Foundation.Items.Tags;
 using Foundation.Movement.Components;
 using Foundation.Shared;
+using Foundation.SpawnSystem.Components;
+using Foundation.SpawnSystem.Configs;
 using Leopotam.Ecs;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Foundation.Items.Systems
+namespace Foundation.SpawnSystem.Systems
 {
-    public class ItemsInitializeSystem : IEcsInitSystem, IEcsDestroySystem
+    sealed class ItemsSpawnSystem : IEcsInitSystem, IEcsRunSystem, IEcsDestroySystem
     {
         private EcsWorld _ecsWorld = null;
-        private ItemConfig _config;
+        private ItemConfig _itemConfig;
+        private SpawnerConfig _spawnerConfig;
 
         private GameObject _itemPrefab;
 
         private CancellationTokenSource _cancellationTokenSource;
 
+        private float _currentCount;
+
+        private List<GameObject> _items;
+
         public void Init()
         {
+            _currentCount = 0;
+            _items = new List<GameObject>();
+
             if (_cancellationTokenSource != null &&
                 _cancellationTokenSource.IsCancellationRequested == false)
             {
@@ -31,7 +43,21 @@ namespace Foundation.Items.Systems
 
             _cancellationTokenSource = new CancellationTokenSource();
 
-            LoadPrefab(_config.Prefab, _cancellationTokenSource.Token).Forget();
+            LoadPrefab(_itemConfig.Prefab, _cancellationTokenSource.Token).Forget();
+        }
+
+        public void Run()
+        {
+            if (_currentCount >= _spawnerConfig.Delay)
+            {
+                _currentCount = 0;
+
+                SpawnItem();
+            }
+            else
+            {
+                _currentCount += Time.deltaTime;
+            }
         }
 
         public void Destroy()
@@ -45,7 +71,22 @@ namespace Foundation.Items.Systems
             }
         }
 
-        public GameObject CreateItem()
+        private void SpawnItem()
+        {
+            GameObject disabledItem = _items.FirstOrDefault(
+                item => item.activeSelf == false);
+
+            if (disabledItem == null)
+            {
+                disabledItem = CreateItem();
+            }
+            else
+            {
+                disabledItem.SetActive(true);
+            }
+        }
+
+        private GameObject CreateItem()
         {
             GameObject item = Object.Instantiate(_itemPrefab);
 
@@ -60,12 +101,13 @@ namespace Foundation.Items.Systems
 
             ref var itemTag = ref itemEntity.Get<ItemTag>();
             ref var model = ref itemEntity.Get<ModelComponent>();
-            ref var direction = ref itemEntity.Get<DirectionComponent>();
             ref var droppable = ref itemEntity.Get<DroppableComponent>();
+            ref var spawnable = ref itemEntity.Get<SpawnableComponent>();
 
             model.Transform = item.transform;
-            droppable.DropPower = _config.DropPower;
+            droppable.DropPower = _itemConfig.DropPower;
             droppable.Rigidbody = item.GetComponent<Rigidbody>();
+            spawnable.IsPositionRandomized = false;
         }
 
         private async UniTask LoadPrefab(CustomAssetReferenceTo<GameObject> prefab, CancellationToken cancellationToken)
