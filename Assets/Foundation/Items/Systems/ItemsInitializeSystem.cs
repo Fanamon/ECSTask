@@ -49,9 +49,9 @@ namespace Foundation.Items.Systems
         {
             GameObject item = Object.Instantiate(_itemPrefab);
 
+            CreateItemEntity(item);
 
-
-            return null;
+            return item;
         }
 
         private void CreateItemEntity(GameObject item)

@@ -1,3 +1,5 @@
+using Foundation.Items.Configs;
+using Foundation.Items.Systems;
 using Foundation.Movement.Systems;
 using Foundation.Player.Configs;
 using Foundation.Player.Systems;
@@ -12,6 +14,7 @@ namespace Foundation.EcsSystem.View
     public sealed class EcsGameStartup : MonoBehaviour
     {
         [SerializeField] private PlayerConfig _playerConfig;
+        [SerializeField] private ItemConfig _itemConfig;
         [SerializeField] private PlayerSpawnPoint _playerSpawnPoint;
         [SerializeField] private CameraFollowInitializer _cameraFollowInitializer;
 
@@ -65,14 +68,16 @@ namespace Foundation.EcsSystem.View
             _updateSystems.
                 Inject(_playerConfig).
                 Inject(_playerSpawnPoint).
-                Inject(_cameraFollowInitializer);
+                Inject(_cameraFollowInitializer).
+                Inject(_itemConfig);
         }
 
         private void AddSystems()
         {
             _updateSystems.
                 Add(new PlayerInitializeSystem()).
-                Add(new PlayerInputSystem());
+                Add(new PlayerInputSystem()).
+                Add(new ItemsInitializeSystem());
 
             _lateUpdateSystems.
                 Add(new MovementSystem());
