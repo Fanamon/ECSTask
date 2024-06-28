@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Icons
+  m_EditorClassIdentifier: 
+  m_GroupName: Icons
+  m_Data:
+    m_SerializedData: []
+  m_GUID: ca1038603450d684e8357c532b74511d
+  m_SerializeEntries:
+  - m_GUID: 58114401b53304147ba1f23bf788bca2
+    m_Address: Assets/Foundation/Items/Icons
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 028bbf4b5bb1e7f41ac06c65f2df0e13, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 8dc11d73111561740b52e03e5cb70cd3, type: 2}
+    - {fileID: 11400000, guid: 166b636a6e7492a4a8790b82d0459d8e, type: 2}

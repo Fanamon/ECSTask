@@ -81,7 +81,6 @@ namespace Foundation.Player.Systems
             model.Transform = player.transform;
             movable.NavMeshAgent = player.GetComponent<NavMeshAgent>();
             dampingDirection.Duration = _config.DampingDuration;
-            stackKeep.Guid = player.GetComponent<ItemObtainerView>().Guid;
             stackKeep.ItemObtainerView = player.GetComponent<ItemObtainerView>();
             stackKeep.IsObtainerSystemSubscribed = false;
             stackKeep.Items = new Stack<ItemView>();

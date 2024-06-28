@@ -1,3 +1,4 @@
+using Foundation.GUI.Views;
 using Foundation.Items.Configs;
 using Foundation.Movement.Systems;
 using Foundation.Player.Configs;
@@ -22,6 +23,7 @@ namespace Foundation.EcsSystem.View
         [SerializeField] private PlayerSpawnPoint _playerSpawnPoint;
         [SerializeField] private ItemsCircleSpawnerPointsData _itemsCircleSpawnerPointsData;
         [SerializeField] private SpawnContainerView _spawnContainerView;
+        [SerializeField] private InventoryPanelView _inventoryPanelView;
         [SerializeField] private CameraFollowInitializer _cameraFollowInitializer;
 
         private EcsWorld _world;
@@ -78,7 +80,8 @@ namespace Foundation.EcsSystem.View
                 Inject(_itemConfig).
                 Inject(_itemsCircleSpawnerPointsData).
                 Inject(_spawnerConfig).
-                Inject(_spawnContainerView);
+                Inject(_spawnContainerView).
+                Inject(_inventoryPanelView);
         }
 
         private void AddSystems()

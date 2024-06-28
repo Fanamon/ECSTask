@@ -5,11 +5,32 @@ namespace Foundation.Items.Views
 {
     public class ItemView : MonoBehaviour
     {
+        [SerializeField] private Sprite _icon;
+
+        private bool _isGuidInitialized = false;
+
+        public Sprite Icon => _icon;
         public Guid Guid { get; private set; }
 
-        private void Awake()
+        public void Initialize(Guid guid)
         {
-            Guid guid = Guid.NewGuid();
+            _isGuidInitialized = true;
+
+            Guid = guid;
+        }
+
+        private void OnEnable()
+        {
+            if (_isGuidInitialized == false)
+            {
+                Guid = Guid.NewGuid();
+            }
+        }
+
+        private void OnDisable()
+        {
+            Guid = Guid.Empty;
+            _isGuidInitialized = false;
         }
     }
 }
