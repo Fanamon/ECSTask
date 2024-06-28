@@ -5,6 +5,7 @@ using Foundation.Player.Systems;
 using Foundation.Player.Views;
 using Foundation.SpawnSystem.Configs;
 using Foundation.SpawnSystem.Systems;
+using Foundation.SpawnSystem.Views;
 using Foundation.SpawnSystem.Views.SpawnPoints;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace Foundation.EcsSystem.View
 
         [SerializeField] private PlayerSpawnPoint _playerSpawnPoint;
         [SerializeField] private ItemsCircleSpawnerPointsData _itemsCircleSpawnerPointsData;
+        [SerializeField] private SpawnContainerView _spawnContainerView;
         [SerializeField] private CameraFollowInitializer _cameraFollowInitializer;
 
         private EcsWorld _world;
@@ -75,7 +77,8 @@ namespace Foundation.EcsSystem.View
                 Inject(_cameraFollowInitializer).
                 Inject(_itemConfig).
                 Inject(_itemsCircleSpawnerPointsData).
-                Inject(_spawnerConfig);
+                Inject(_spawnerConfig).
+                Inject(_spawnContainerView);
         }
 
         private void AddSystems()
@@ -83,6 +86,7 @@ namespace Foundation.EcsSystem.View
             _updateSystems.
                 Add(new PlayerInitializeSystem()).
                 Add(new PlayerInputSystem()).
+                Add(new PlayerItemsObtainerSystem()).
                 Add(new ItemsSpawnSystem()).
                 Add(new ItemsCirclePositionerSystem());
 

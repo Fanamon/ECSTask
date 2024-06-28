@@ -1,4 +1,6 @@
 using Cysharp.Threading.Tasks;
+using Foundation.Inventory.Components;
+using Foundation.Items.Views;
 using Foundation.Movement.Components;
 using Foundation.Player.Configs;
 using Foundation.Player.Tags;
@@ -6,6 +8,7 @@ using Foundation.Player.Views;
 using Foundation.Shared;
 using Foundation.SpawnSystem.Views.SpawnPoints;
 using Leopotam.Ecs;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -73,10 +76,15 @@ namespace Foundation.Player.Systems
             ref var model = ref _playerEntity.Get<ModelComponent>();
             ref var movable = ref _playerEntity.Get<MovableComponent>();
             ref var dampingDirection = ref _playerEntity.Get<DampingDirectionComponent>();
+            ref var stackKeep = ref _playerEntity.Get<StackKeepComponent>();
 
             model.Transform = player.transform;
             movable.NavMeshAgent = player.GetComponent<NavMeshAgent>();
             dampingDirection.Duration = _config.DampingDuration;
+            stackKeep.Guid = player.GetComponent<ItemObtainerView>().Guid;
+            stackKeep.ItemObtainerView = player.GetComponent<ItemObtainerView>();
+            stackKeep.IsObtainerSystemSubscribed = false;
+            stackKeep.Items = new Stack<ItemView>();
 
             _cameraFollowInitializer.SetCameraFollow(model.Transform);
         }

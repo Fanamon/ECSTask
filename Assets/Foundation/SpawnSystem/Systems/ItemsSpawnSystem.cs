@@ -1,10 +1,12 @@
 using Cysharp.Threading.Tasks;
 using Foundation.Items.Configs;
 using Foundation.Items.Tags;
+using Foundation.Items.Views;
 using Foundation.Movement.Components;
 using Foundation.Shared;
 using Foundation.SpawnSystem.Components;
 using Foundation.SpawnSystem.Configs;
+using Foundation.SpawnSystem.Views;
 using Leopotam.Ecs;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +23,7 @@ namespace Foundation.SpawnSystem.Systems
         private SpawnerConfig _spawnerConfig;
 
         private GameObject _itemPrefab;
+        private SpawnContainerView _spawnContainerView;
 
         private CancellationTokenSource _cancellationTokenSource;
 
@@ -89,6 +92,7 @@ namespace Foundation.SpawnSystem.Systems
         private GameObject CreateItem()
         {
             GameObject item = Object.Instantiate(_itemPrefab);
+            item.transform.parent = _spawnContainerView.transform;
 
             CreateItemEntity(item);
 
@@ -107,6 +111,7 @@ namespace Foundation.SpawnSystem.Systems
             model.Transform = item.transform;
             droppable.DropPower = _itemConfig.DropPower;
             droppable.Rigidbody = item.GetComponent<Rigidbody>();
+            spawnable.Guid = item.GetComponent<ItemView>().Guid;
             spawnable.IsPositionRandomized = false;
         }
 
