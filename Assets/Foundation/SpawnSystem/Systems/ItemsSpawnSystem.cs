@@ -29,12 +29,12 @@ namespace Foundation.SpawnSystem.Systems
 
         private float _currentCount;
 
-        private List<GameObject> _items;
+        private Dictionary<GameObject, EcsEntity> _items;
 
         public void Init()
         {
             _currentCount = 0;
-            _items = new List<GameObject>();
+            _items = new Dictionary<GameObject, EcsEntity>();
 
             if (_cancellationTokenSource != null &&
                 _cancellationTokenSource.IsCancellationRequested == false)
@@ -76,30 +76,32 @@ namespace Foundation.SpawnSystem.Systems
 
         private void SpawnItem()
         {
-            GameObject disabledItem = _items.FirstOrDefault(
+            GameObject disabledItem = _items.Keys.FirstOrDefault(
                 item => item.activeSelf == false);
 
             if (disabledItem == null)
             {
-                disabledItem = CreateItem();
+                CreateItem();
             }
             else
             {
+                ref var spawnable = ref _items[disabledItem].Get<SpawnableComponent>();
+                spawnable.IsPositionRandomized = false;
+
                 disabledItem.SetActive(true);
             }
         }
 
-        private GameObject CreateItem()
+        private void CreateItem()
         {
             GameObject item = Object.Instantiate(_itemPrefab);
             item.transform.parent = _spawnContainerView.transform;
+            var itemEntity = CreateItemEntity(item);
 
-            CreateItemEntity(item);
-
-            return item;
+            _items.Add(item, itemEntity);
         }
 
-        private void CreateItemEntity(GameObject item)
+        private EcsEntity CreateItemEntity(GameObject item)
         {
             EcsEntity itemEntity = _ecsWorld.NewEntity();
 
@@ -113,6 +115,8 @@ namespace Foundation.SpawnSystem.Systems
             droppable.Rigidbody = item.GetComponent<Rigidbody>();
             spawnable.Guid = item.GetComponent<ItemView>().Guid;
             spawnable.IsPositionRandomized = false;
+
+            return itemEntity;
         }
 
         private async UniTask LoadPrefab(CustomAssetReferenceTo<GameObject> prefab, CancellationToken cancellationToken)

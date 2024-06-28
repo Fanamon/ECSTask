@@ -50,7 +50,6 @@ namespace Foundation.Player.Systems
                 if (spawnable.Guid == item.Guid)
                 {
                     model.Transform.gameObject.SetActive(false);
-                    spawnable.IsPositionRandomized = false;
                 }
             }
 
