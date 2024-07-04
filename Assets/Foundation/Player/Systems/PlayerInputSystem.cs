@@ -25,6 +25,8 @@ namespace Foundation.Player.Systems
         private Vector2 _startControllerPosition;
         private Vector2 _moveDirection;
 
+        private bool _isAnimationStarted;
+
         private List<Tweener> _dampingTweeners;
         private List<Tweener> _dampingAnimationTweeners;
         private List<CancellationTokenSource> _cancellationTokenSources;
@@ -75,24 +77,29 @@ namespace Foundation.Player.Systems
 
             _playerInputAction.Player.Swipe.performed += OnSwiped;
             _playerInputAction.Player.Tap.canceled += OnTapCanceled;
-
-            foreach (var entity in _animatorFilter)
-            {
-                ref var animatorComponent = ref _animatorFilter.Get2(entity);
-                Animator animator = animatorComponent.Animator;
-                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-
-                AnimateRunning(animator, cancellationTokenSource.Token).Forget();
-
-                CancellationTokenSource canceledTokenSource = 
-                    _cancellationTokenSources.FirstOrDefault(tokenSource => tokenSource.IsCancellationRequested);
-
-                _cancellationTokenSources.Add(cancellationTokenSource);
-            }
         }
 
         private void OnSwiped(InputAction.CallbackContext context)
         {
+            if (_isAnimationStarted == false)
+            {
+                foreach (var entity in _animatorFilter)
+                {
+                    ref var animatorComponent = ref _animatorFilter.Get2(entity);
+                    Animator animator = animatorComponent.Animator;
+                    CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+                    AnimateRunning(animator, cancellationTokenSource.Token).Forget();
+
+                    CancellationTokenSource canceledTokenSource =
+                        _cancellationTokenSources.FirstOrDefault(tokenSource => tokenSource.IsCancellationRequested);
+
+                    _cancellationTokenSources.Add(cancellationTokenSource);
+                }
+
+                _isAnimationStarted = true;
+            }
+
             _moveDirection = _playerInputAction.Player.Position.ReadValue<Vector2>() - 
                 _startControllerPosition;
         }
@@ -171,6 +178,8 @@ namespace Foundation.Player.Systems
                     tokenSource?.Dispose();
                 }
             }
+
+            _isAnimationStarted = false;
         }
     }
 }
