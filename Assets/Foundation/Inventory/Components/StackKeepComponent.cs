@@ -1,5 +1,5 @@
-using Foundation.Items.Views;
 using Foundation.Player.Views;
+using System;
 using System.Collections.Generic;
 
 namespace Foundation.Inventory.Components
@@ -10,6 +10,6 @@ namespace Foundation.Inventory.Components
 
         public bool IsObtainerSystemSubscribed;
 
-        public Stack<ItemView> Items;
+        public Stack<Guid> ItemGuids;
     }
 }

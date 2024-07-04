@@ -1,11 +1,14 @@
+using System;
 using UnityEngine;
 
 namespace Foundation.Movement.Components
 {
     internal struct DroppableComponent
     {
-        public float DropPower;
+        public Vector3 DropPoint;
 
-        public Rigidbody Rigidbody;
+        public bool IsDropped;
+
+        public bool IsReadyToDrop;
     }
 }

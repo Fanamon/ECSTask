@@ -27,6 +27,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df3ca6257d293324681611530f4e930b
+    m_Address: Assets/Foundation/GUI/Content/Views/ItemInventoryView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 028bbf4b5bb1e7f41ac06c65f2df0e13, type: 2}
   m_SchemaSet:

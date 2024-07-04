@@ -7,16 +7,15 @@ namespace Foundation.Items.Views
     {
         [SerializeField] private Sprite _icon;
 
-        private bool _isGuidInitialized = false;
+        private bool _isGuidInitialized;
 
         public Sprite Icon => _icon;
         public Guid Guid { get; private set; }
 
         public void Initialize(Guid guid)
         {
-            _isGuidInitialized = true;
-
             Guid = guid;
+            _isGuidInitialized = true;
         }
 
         private void OnEnable()
@@ -24,12 +23,12 @@ namespace Foundation.Items.Views
             if (_isGuidInitialized == false)
             {
                 Guid = Guid.NewGuid();
+                _isGuidInitialized = true;
             }
         }
 
         private void OnDisable()
         {
-            Guid = Guid.Empty;
             _isGuidInitialized = false;
         }
     }

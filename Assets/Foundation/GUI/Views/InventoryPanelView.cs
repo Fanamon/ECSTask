@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -11,70 +8,46 @@ namespace Foundation.GUI.Views
     {
         [SerializeField] private Button _dropItemButton;
         [SerializeField] private GameObject _itemsViewsContainer;
-        [SerializeField] private ItemInventoryView _itemInventoryViewPrefab;
 
-        private Stack<ItemInventoryView> _itemInventoryViews;
-        private List<ItemInventoryView> _disabledInventoryViews;
+        public Transform ItemViewsContainer => _itemsViewsContainer.transform;
 
-        public event UnityAction<Guid> ItemRemoved;
-
-        private void Awake()
+        public void InitializeButton(UnityAction onButtonClicked)
         {
-            _itemInventoryViews = new Stack<ItemInventoryView>();
-            _disabledInventoryViews = new List<ItemInventoryView>();
             _dropItemButton.gameObject.SetActive(false);
+            _dropItemButton.onClick.AddListener(onButtonClicked);
         }
 
-        private void OnEnable()
+        public void UnsubscribeButton(UnityAction onButtonClicked)
         {
-            _dropItemButton.onClick.AddListener(OnDropButtonClicked);
+            _dropItemButton.onClick.RemoveListener(onButtonClicked);
         }
 
-        private void OnDisable()
+        public bool TryEnableDropButton()
         {
-            _dropItemButton.onClick.RemoveListener(OnDropButtonClicked);
-        }
-
-        public void AddItem(Guid guid, Sprite sprite)
-        {
-            ItemInventoryView itemInventoryView = _disabledInventoryViews.FirstOrDefault();
-
-            if (itemInventoryView == null)
-            {
-                itemInventoryView = CreateItemInventoryView();
-            }
-            else
-            {
-                _disabledInventoryViews.Remove(itemInventoryView);
-                itemInventoryView.gameObject.SetActive(true);
-            }
-
-            itemInventoryView.Initialize(guid, sprite);
-            _itemInventoryViews.Push(itemInventoryView);
+            bool isButtonEnabled = false;
 
             if (_dropItemButton.gameObject.activeSelf == false)
             {
                 _dropItemButton.gameObject.SetActive(true);
+
+                isButtonEnabled = true;
             }
+
+            return isButtonEnabled;
         }
 
-        public void OnDropButtonClicked()
+        public bool TryDisableDropButton(int itemViewsCount)
         {
-            var itemInventoryView = _itemInventoryViews.Pop();
+            bool isButtonDisabled = false;
 
-            itemInventoryView.gameObject.SetActive(false);
-            _disabledInventoryViews.Add(itemInventoryView);
-            ItemRemoved?.Invoke(itemInventoryView.Guid);
-
-            if (_itemInventoryViews.Count == 0)
+            if (itemViewsCount == 0)
             {
                 _dropItemButton.gameObject.SetActive(false);
-            }
-        }
 
-        public ItemInventoryView CreateItemInventoryView()
-        {
-            return Instantiate(_itemInventoryViewPrefab, _itemsViewsContainer.transform);
+                isButtonDisabled = true;
+            }
+
+            return isButtonDisabled;
         }
     }
 }

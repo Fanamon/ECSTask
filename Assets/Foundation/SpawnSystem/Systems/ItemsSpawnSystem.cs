@@ -1,17 +1,15 @@
 using Cysharp.Threading.Tasks;
-using Foundation.GUI.Views;
 using Foundation.Inventory.Components;
+using Foundation.Items.Components;
 using Foundation.Items.Configs;
 using Foundation.Items.Tags;
 using Foundation.Items.Views;
 using Foundation.Movement.Components;
-using Foundation.Player.Tags;
 using Foundation.Shared;
 using Foundation.SpawnSystem.Components;
 using Foundation.SpawnSystem.Configs;
 using Foundation.SpawnSystem.Views;
 using Leopotam.Ecs;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -23,26 +21,24 @@ namespace Foundation.SpawnSystem.Systems
     sealed class ItemsSpawnSystem : IEcsInitSystem, IEcsRunSystem, IEcsDestroySystem
     {
         private EcsWorld _ecsWorld = null;
-        private EcsFilter<PlayerTag, StackKeepComponent> _dropPointFilter = null;
+        private readonly EcsFilter<ItemTag, DroppableComponent> _droppableFilter = null;
 
         private ItemConfig _itemConfig;
         private SpawnerConfig _spawnerConfig;
 
         private GameObject _itemPrefab;
         private SpawnContainerView _spawnContainerView;
-        private InventoryPanelView _inventoryPanelView;
 
         private CancellationTokenSource _cancellationTokenSource;
 
         private float _currentCount;
 
-        private Dictionary<GameObject, EcsEntity> _items;
+        private List<GameObject> _items;
 
         public void Init()
         {
             _currentCount = 0;
-            _items = new Dictionary<GameObject, EcsEntity>();
-            _inventoryPanelView.ItemRemoved += OnItemRemoved;
+            _items = new List<GameObject>();
 
             if (_cancellationTokenSource != null &&
                 _cancellationTokenSource.IsCancellationRequested == false)
@@ -69,12 +65,23 @@ namespace Foundation.SpawnSystem.Systems
             {
                 _currentCount += Time.deltaTime;
             }
+
+            foreach (var entity in _droppableFilter)
+            {
+                ref var droppable = ref _droppableFilter.Get2(entity);
+
+                if (droppable.IsReadyToDrop)
+                {
+                    OnItemRemoved(_droppableFilter.GetEntity(entity));
+
+                    droppable.IsReadyToDrop = false;
+                    droppable.IsDropped = true;
+                }
+            }
         }
 
         public void Destroy()
         {
-            _inventoryPanelView.ItemRemoved -= OnItemRemoved;
-
             if (_cancellationTokenSource != null &&
                 _cancellationTokenSource.IsCancellationRequested == false)
             {
@@ -84,54 +91,57 @@ namespace Foundation.SpawnSystem.Systems
             }
         }
 
-        private GameObject SpawnItem(bool isPositionInitialized = false)
+        private GameObject SpawnItem(bool isPositionInitialized = false, 
+            EcsEntity itemEntity = default(EcsEntity))
         {
-            GameObject spawnedItem = _items.Keys.FirstOrDefault(
+            GameObject spawnedItem = _items.FirstOrDefault(
                 item => item.activeSelf == false);
 
             if (spawnedItem == null)
             {
-                spawnedItem = CreateItem(isPositionInitialized);
+                spawnedItem = CreateItem(isPositionInitialized, itemEntity);
             }
             else
             {
-                ref var spawnable = ref _items[spawnedItem].Get<SpawnableComponent>();
-                spawnable.IsPositionRandomized = isPositionInitialized;
-
                 spawnedItem.SetActive(true);
+
+                if (itemEntity == default(EcsEntity))
+                {
+                    CreateItemEntity(spawnedItem, isPositionInitialized);
+                }
             }
+
+            spawnedItem.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
             return spawnedItem;
         }
 
-        private void OnItemRemoved(Guid guid)
+        private void OnItemRemoved(EcsEntity itemEntity)
         {
-            Vector3 dropPoint = Vector3.zero;
             GameObject spawnedItem;
 
-            foreach (var entity in _dropPointFilter)
-            {
-                ref var stackKeep = ref _dropPointFilter.Get2(entity);
+            spawnedItem = SpawnItem(true, itemEntity);
 
-                dropPoint = stackKeep.ItemObtainerView.DropPoint;
-            }
+            ref var model = ref itemEntity.Get<ModelComponent>();
+            ref var spawnable = ref itemEntity.Get<SpawnableComponent>();
+            ref var droppable = ref itemEntity.Get<DroppableComponent>();
 
-            spawnedItem = SpawnItem(true);
-
-            ref var spawnable = ref _items[spawnedItem].Get<SpawnableComponent>();
-
-            spawnable.Guid = guid;
-            spawnedItem.GetComponent<ItemView>().Initialize(guid);
-            spawnedItem.transform.position = dropPoint;
+            model.Transform = spawnedItem.transform;
+            spawnedItem.GetComponent<ItemView>().Initialize(spawnable.Guid);
+            droppable.IsDropped = true;
         }
 
-        private GameObject CreateItem(bool isPositionInitialized = false)
+        private GameObject CreateItem(bool isPositionInitialized = false, EcsEntity itemEntity = default(EcsEntity))
         {
             GameObject item = UnityEngine.Object.Instantiate(_itemPrefab);
             item.transform.parent = _spawnContainerView.transform;
-            var itemEntity = CreateItemEntity(item, isPositionInitialized);
+            
+            if (itemEntity == default(EcsEntity))
+            {
+                itemEntity = CreateItemEntity(item, isPositionInitialized);
+            }
 
-            _items.Add(item, itemEntity);
+            _items.Add(item);
 
             return item;
         }
@@ -139,17 +149,23 @@ namespace Foundation.SpawnSystem.Systems
         private EcsEntity CreateItemEntity(GameObject item, bool isPositionInitialized = false)
         {
             EcsEntity itemEntity = _ecsWorld.NewEntity();
+            ItemView itemView = item.GetComponent<ItemView>();
 
             ref var itemTag = ref itemEntity.Get<ItemTag>();
             ref var model = ref itemEntity.Get<ModelComponent>();
             ref var droppable = ref itemEntity.Get<DroppableComponent>();
             ref var spawnable = ref itemEntity.Get<SpawnableComponent>();
+            ref var obtainable = ref itemEntity.Get<ObtainableComponent>();
+            ref var removable = ref itemEntity.Get<RemovableComponent>();
 
             model.Transform = item.transform;
-            droppable.DropPower = _itemConfig.DropPower;
-            droppable.Rigidbody = item.GetComponent<Rigidbody>();
-            spawnable.Guid = item.GetComponent<ItemView>().Guid;
+            droppable.IsDropped = false;
+            droppable.IsReadyToDrop = false;
+            spawnable.Guid = itemView.Guid;
             spawnable.IsPositionRandomized = isPositionInitialized;
+            obtainable.InventoryIcon = itemView.Icon;
+            obtainable.IsObtained = false;
+            removable.IsRemoved = false;
 
             return itemEntity;
         }
@@ -158,6 +174,8 @@ namespace Foundation.SpawnSystem.Systems
         {
             _itemPrefab = await Addressables.LoadAssetAsync<GameObject>(prefab)
                 .ToUniTask(cancellationToken: cancellationToken);
+
+            _cancellationTokenSource = null;
         }
     }
 }

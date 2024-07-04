@@ -15,10 +15,5 @@ namespace Foundation.GUI.Views
             Guid = guid;
             _icon.sprite = sprite;
         }
-
-        private void OnDisable()
-        {
-            Guid = Guid.Empty;
-        }
     }
 }

@@ -8,6 +8,7 @@ using Foundation.Player.Views;
 using Foundation.Shared;
 using Foundation.SpawnSystem.Views.SpawnPoints;
 using Leopotam.Ecs;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -71,7 +72,8 @@ namespace Foundation.Player.Systems
 
         private void CreatePlayer(GameObject playerPrefab)
         {
-            GameObject player = Object.Instantiate(playerPrefab, _spawnPoint.SpawnPoint.position, Quaternion.identity);
+            GameObject player = UnityEngine.Object.
+                Instantiate(playerPrefab, _spawnPoint.SpawnPoint.position, Quaternion.identity);
 
             ref var model = ref _playerEntity.Get<ModelComponent>();
             ref var movable = ref _playerEntity.Get<MovableComponent>();
@@ -83,7 +85,7 @@ namespace Foundation.Player.Systems
             dampingDirection.Duration = _config.DampingDuration;
             stackKeep.ItemObtainerView = player.GetComponent<ItemObtainerView>();
             stackKeep.IsObtainerSystemSubscribed = false;
-            stackKeep.Items = new Stack<ItemView>();
+            stackKeep.ItemGuids = new Stack<Guid>();
 
             _cameraFollowInitializer.SetCameraFollow(model.Transform);
         }

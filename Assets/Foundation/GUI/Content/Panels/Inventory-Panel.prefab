@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 1235593012853950281}
   - component: {fileID: 3022061786210620855}
   - component: {fileID: 4914846812103354300}
-  - component: {fileID: 6128055435916675896}
+  - component: {fileID: 2906899831113935886}
   m_Layer: 5
   m_Name: Inventory-Panel
   m_TagString: Untagged
@@ -379,7 +379,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6128055435916675896
+--- !u!114 &2906899831113935886
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -388,12 +388,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3636717947981927027}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46a218856dfa6854a9a95eac1c797fa1, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c1dc35e0ab62b645b32209b5f943700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _dropItemButton: {fileID: 723716183272025817}
   _itemsViewsContainer: {fileID: 1497449950634981367}
-  _itemInventoryViewPrefab: {fileID: 6182471922837154034, guid: df3ca6257d293324681611530f4e930b, type: 3}
 --- !u!1 &6693149861753054441
 GameObject:
   m_ObjectHideFlags: 0
