@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7ae11b7629a09a4296fd38277eed79c, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  _dampingDuration: 0.35
+  _dampingDuration: 0.5
+  _dampAnimationDuration: 1
   Prefab:
     m_AssetGUID: 14cc76629b896ae48a4ad71d9334401c
     m_SubObjectName: 

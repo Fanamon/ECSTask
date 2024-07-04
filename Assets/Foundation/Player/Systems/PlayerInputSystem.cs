@@ -1,9 +1,14 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Foundation.Controller.Interactions;
 using Foundation.Movement.Components;
+using Foundation.Player.Components;
+using Foundation.Player.ImportedAssets.Stickman.Scripts;
 using Foundation.Player.Tags;
 using Leopotam.Ecs;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,15 +18,22 @@ namespace Foundation.Player.Systems
     {
         private readonly EcsFilter<PlayerTag, DirectionComponent, 
             DampingDirectionComponent> _directionFilter = null;
+        private readonly EcsFilter<PlayerTag, AnimatorComponent>
+            _animatorFilter = null;
         private PlayerInputAction _playerInputAction;
 
         private Vector2 _startControllerPosition;
         private Vector2 _moveDirection;
 
         private List<Tweener> _dampingTweeners;
+        private List<Tweener> _dampingAnimationTweeners;
+        private List<CancellationTokenSource> _cancellationTokenSources;
+
         public void Init()
         {
             _dampingTweeners = new List<Tweener>();
+            _dampingAnimationTweeners = new List<Tweener>();
+            _cancellationTokenSources = new List<CancellationTokenSource>();
 
             _playerInputAction = new PlayerInputAction();
             _playerInputAction.Enable();
@@ -42,6 +54,8 @@ namespace Foundation.Player.Systems
 
         public void Destroy()
         {
+            ResetAnimationTweenersAndTokens();
+
             foreach (var dampingTweener in _dampingTweeners)
             {
                 if (dampingTweener.IsActive())
@@ -55,10 +69,26 @@ namespace Foundation.Player.Systems
 
         private void OnTapped(InputAction.CallbackContext context)
         {
+            ResetAnimationTweenersAndTokens();
+
             _startControllerPosition = _playerInputAction.Player.Position.ReadValue<Vector2>();
 
             _playerInputAction.Player.Swipe.performed += OnSwiped;
             _playerInputAction.Player.Tap.canceled += OnTapCanceled;
+
+            foreach (var entity in _animatorFilter)
+            {
+                ref var animatorComponent = ref _animatorFilter.Get2(entity);
+                Animator animator = animatorComponent.Animator;
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+
+                AnimateRunning(animator, cancellationTokenSource.Token).Forget();
+
+                CancellationTokenSource canceledTokenSource = 
+                    _cancellationTokenSources.FirstOrDefault(tokenSource => tokenSource.IsCancellationRequested);
+
+                _cancellationTokenSources.Add(cancellationTokenSource);
+            }
         }
 
         private void OnSwiped(InputAction.CallbackContext context)
@@ -69,6 +99,8 @@ namespace Foundation.Player.Systems
 
         private void OnTapCanceled(InputAction.CallbackContext context)
         {
+            ResetAnimationTweenersAndTokens();
+
             _playerInputAction.Player.Swipe.performed -= OnSwiped;
             _playerInputAction.Player.Tap.canceled -= OnTapCanceled;
 
@@ -78,7 +110,66 @@ namespace Foundation.Player.Systems
 
                 Tweener dampingTweener = DOVirtual.Vector2(_moveDirection, Vector2.zero,
                 damping.Duration, value => _moveDirection = value);
+
                 _dampingTweeners.Add(dampingTweener);
+            }
+
+            foreach (var entity in _animatorFilter)
+            {
+                ref var animatorComponent = ref _animatorFilter.Get2(entity);
+                Animator animator = animatorComponent.Animator;
+
+                if (animator != null)
+                {
+                    float currentSpeed = animator.GetFloat(Animator.StringToHash(StickmanAnimatorParameters.Speed));
+
+                    Tweener dampingAnimatorSpeed = DOVirtual.Float(currentSpeed, StickmanAnimatorParameters.MinMoveSpeed,
+                        animatorComponent.Damping, value => animator?.SetFloat(StickmanAnimatorParameters.Speed, value));
+                    Tweener killedTweener = _dampingAnimationTweeners.FirstOrDefault(tweener =>
+                    tweener.IsActive() == false);
+
+                    _dampingAnimationTweeners.Add(dampingAnimatorSpeed);
+                }
+            }
+        }
+
+        private async UniTask AnimateRunning(Animator animator, 
+            CancellationToken cancellationToken)
+        {
+            float currentSpeed = animator.GetFloat(Animator.StringToHash(StickmanAnimatorParameters.Speed));
+            float currentTimer = 0f;
+
+            while (cancellationToken.IsCancellationRequested == false && animator != null)
+            {
+                if (animator != null)
+                {
+                    currentTimer += Time.deltaTime;
+                    currentSpeed = Mathf.Lerp(currentSpeed, StickmanAnimatorParameters.MaxMoveSpeed,
+                        currentTimer / StickmanAnimatorParameters.AccelerateTimeInSeconds);
+                    animator?.SetFloat(StickmanAnimatorParameters.Speed, currentSpeed);
+
+                    await UniTask.Yield(cancellationToken);
+                }
+            }
+        }
+
+        private void ResetAnimationTweenersAndTokens()
+        {
+            foreach (var tweener in _dampingAnimationTweeners)
+            {
+                if (tweener.IsActive())
+                {
+                    tweener.Kill();
+                }
+            }
+
+            foreach (var tokenSource in _cancellationTokenSources)
+            {
+                if (tokenSource.IsCancellationRequested == false)
+                {
+                    tokenSource?.Cancel();
+                    tokenSource?.Dispose();
+                }
             }
         }
     }

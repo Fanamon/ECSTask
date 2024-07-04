@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using Foundation.Inventory.Components;
 using Foundation.Items.Views;
 using Foundation.Movement.Components;
+using Foundation.Player.Components;
 using Foundation.Player.Configs;
 using Foundation.Player.Tags;
 using Foundation.Player.Views;
@@ -79,6 +80,7 @@ namespace Foundation.Player.Systems
             ref var movable = ref _playerEntity.Get<MovableComponent>();
             ref var dampingDirection = ref _playerEntity.Get<DampingDirectionComponent>();
             ref var stackKeep = ref _playerEntity.Get<StackKeepComponent>();
+            ref var animator = ref _playerEntity.Get<AnimatorComponent>();
 
             model.Transform = player.transform;
             movable.NavMeshAgent = player.GetComponent<NavMeshAgent>();
@@ -86,6 +88,8 @@ namespace Foundation.Player.Systems
             stackKeep.ItemObtainerView = player.GetComponent<ItemObtainerView>();
             stackKeep.IsObtainerSystemSubscribed = false;
             stackKeep.ItemGuids = new Stack<Guid>();
+            animator.Animator = player.GetComponentInChildren<Animator>();
+            animator.Damping = _config.DampAnimationDuration;
 
             _cameraFollowInitializer.SetCameraFollow(model.Transform);
         }
