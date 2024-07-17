@@ -216,7 +216,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6667391427318751076}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.02}
+  m_LocalEulerAnglesHint: {x: 47.88, y: 0, z: 0}
 --- !u!20 &3396066060207555394
 Camera:
   m_ObjectHideFlags: 0
@@ -794,6 +794,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1073083118970474206}
     m_Modifications:
+    - target: {fileID: 1128550727380737835, guid: eb640a527da03e74fa778346990948f8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.6368408
+      objectReference: {fileID: 0}
+    - target: {fileID: 3852982500682591556, guid: eb640a527da03e74fa778346990948f8, type: 3}
+      propertyPath: m_fontSize
+      value: 72
+      objectReference: {fileID: 0}
     - target: {fileID: 4163144711725464675, guid: eb640a527da03e74fa778346990948f8, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -873,6 +881,10 @@ PrefabInstance:
     - target: {fileID: 4163144711725464675, guid: eb640a527da03e74fa778346990948f8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5851444424868661558, guid: eb640a527da03e74fa778346990948f8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 6.674713
       objectReference: {fileID: 0}
     - target: {fileID: 7278825835114961828, guid: eb640a527da03e74fa778346990948f8, type: 3}
       propertyPath: m_SizeDelta.x
